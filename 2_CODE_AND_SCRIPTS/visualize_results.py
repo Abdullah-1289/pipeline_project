@@ -1,4 +1,7 @@
 # visualize_results.py
+import os
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_DIR = os.path.join(PROJECT_ROOT, '3_DATA_AND_ARTIFACTS')
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -60,7 +63,7 @@ def visualize_simulation():
     axes[1].legend()
     
     plt.tight_layout()
-    plt.savefig('simulation_results.png', dpi=300, bbox_inches='tight')
+    plt.savefig(os.path.join(DATA_DIR, 'simulation_results.png'), dpi=300, bbox_inches='tight')
     plt.show()
     
     # Print statistics
@@ -85,8 +88,8 @@ def visualize_simulation():
     }
     
     df_results = pd.DataFrame(results)
-    df_results.to_csv('simulation_metrics.csv', index=False)
-    print("\nResults saved to 'simulation_metrics.csv'")
+    df_results.to_csv(os.path.join(DATA_DIR, 'simulation_metrics.csv'), index=False)
+    print("\nResults saved to os.path.join(DATA_DIR, 'simulation_metrics.csv')")
 
 if __name__ == "__main__":
     visualize_simulation()
