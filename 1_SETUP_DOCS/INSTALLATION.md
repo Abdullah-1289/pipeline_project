@@ -20,79 +20,74 @@ First, clone the repository and navigate into the project directory:
 # Clone the repository
 git clone https://github.com/Abdullah-1289/pipeline_project.git
 cd pipeline_project
+````
 
-2. Automated Installation
+## 2\. Automated Installation
 
 The setup script handles the installation of all necessary software components (Python libraries, Node.js, Node-RED, and Mosquitto).
-Execution
 
-Run the automated setup script. This requires root/sudo privileges.
-Bash
+### Execution
 
+Run the automated setup script. **This requires root/sudo privileges.**
+
+```bash
 # Corrected path to the setup script
 chmod +x 2_CODE_AND_SCRIPTS/setup_environment.sh
 ./2_CODE_AND_SCRIPTS/setup_environment.sh
+```
 
-3. Manual Installation (What the script does)
+-----
+
+## 3\. Manual Installation (What the script does)
 
 If the automated script fails or for system administrators who prefer manual control, follow these steps:
-A. Install System Dependencies (Node.js & Mosquitto)
 
-Ensure Node.js and the Mosquitto MQTT broker are installed on your system. (Note: Specific installation commands may vary by OS. Example for Ubuntu/Debian:)
-Bash
+### A. Install System Dependencies (Node.js & Mosquitto)
 
+Ensure Node.js and the Mosquitto MQTT broker are installed on your system.
+*(Note: Specific installation commands may vary by OS. Example for Ubuntu/Debian:)*
+
+```bash
 # Install Node.js (if not already present)
 sudo apt update
 sudo apt install -y nodejs npm
 
 # Install Mosquitto MQTT Broker
 sudo apt install -y mosquitto mosquitto-clients
+```
 
-B. Setup Python Environment & Dependencies
+### B. Setup Python Environment & Dependencies
 
-    Create a Virtual Environment (venv):
-    Bash
-
-python3 -m venv venv
-
-Activate the Environment:
-Bash
-
-source venv/bin/activate
-
-Install Python Packages:
-Bash
-
+1.  **Create a Virtual Environment (`venv`):**
+    ```bash
+    python3 -m venv venv
+    ```
+2.  **Activate the Environment:**
+    ```bash
+    source venv/bin/activate
+    ```
+3.  **Install Python Packages:**
+    ```bash
     pip install -r 1_SETUP_DOCS/REQUIREMENTS.txt
+    ```
 
-C. Install Node-RED
+### C. Install Node-RED
 
 Install Node-RED globally, which will be used to run the ICS pipeline simulation.
-Bash
 
+```bash
 sudo npm install -g node-red
+```
 
-4. Running the Simulation
+-----
+
+## 4\. Running the Simulation
 
 Once the environment is set up, use the runner script to start the entire pipeline:
-Bash
 
+```bash
 ./2_CODE_AND_SCRIPTS/run_simulation.sh
+```
 
+-----
 
-### Final Steps to Update GitHub
-
-You need to save this correctly formatted content into your local file: `1_SETUP_DOCS/INSTALLATION.md`.
-
-1.  **Stage the change:**
-    ```bash
-    git add 1_SETUP_DOCS/INSTALLATION.md
-    ```
-2.  **Commit the change:**
-    ```bash
-    git commit -m "Fix: Corrected Markdown formatting in INSTALLATION.md to properly render code blocks."
-    ```
-3.  **Push the update:**
-    ```bash
-    git push origin main
-    ```
