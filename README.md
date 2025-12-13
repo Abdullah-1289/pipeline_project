@@ -6,10 +6,6 @@
 - [Run Simulation](2_CODE_AND_SCRIPTS/run_simulation.sh)
 - [View Results](3_DATA_AND_ARTIFACTS/)
 
-## For Team Members
-1. **New to GitHub?** Just download ZIP from GitHub (green "Code" button)
-2. **Need help?** Contact Abdullah or check TEAM_CONTACTS.md
-3. **Stuck?** Run `./2_CODE_AND_SCRIPTS/run_simulation.sh` and follow prompts
 
 ## Results Summary
 - Detection Rate: 86%
