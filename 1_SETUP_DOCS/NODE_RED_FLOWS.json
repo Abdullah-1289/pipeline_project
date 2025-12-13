@@ -1,0 +1,302 @@
+[
+    {
+        "id": "ec2b6c0c.b0c4d8",
+        "type": "tab",
+        "label": "ICS Pipeline Simulation",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "normal_operation",
+        "type": "inject",
+        "z": "ec2b6c0c.b0c4d8",
+        "name": "Normal Operation",
+        "props": [
+            {
+                "p": "payload",
+                "v": "{\"mode\":\"normal\"}",
+                "vt": "json"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "mode",
+        "payloadType": "json",
+        "x": 150,
+        "y": 100,
+        "wires": [
+            ["operation_mode"]
+        ]
+    },
+    {
+        "id": "attack_mode",
+        "type": "inject",
+        "z": "ec2b6c0c.b0c4d8",
+        "name": "Attack Mode",
+        "props": [
+            {
+                "p": "payload",
+                "v": "{\"mode\":\"attack\"}",
+                "vt": "json"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "mode",
+        "payloadType": "json",
+        "x": 150,
+        "y": 160,
+        "wires": [
+            ["operation_mode"]
+        ]
+    },
+    {
+        "id": "operation_mode",
+        "type": "change",
+        "z": "ec2b6c0c.b0c4d8",
+        "name": "Set Operation Mode",
+        "rules": [
+            {
+                "t": "set",
+                "p": "mode",
+                "pt": "msg",
+                "to": "payload.mode",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 380,
+        "y": 130,
+        "wires": [
+            ["sensor_generator"]
+        ]
+    },
+    {
+        "id": "sensor_generator",
+        "type": "function",
+        "z": "ec2b6c0c.b0c4d8",
+        "name": "Generate Sensor Data",
+        "func": "// Initialize if first run\nif (!context.sensorState) {\n    context.sensorState = {\n        flow: 5.0,\n        pressure: 10.0,\n        temp: 25.0,\n        motor_current: 1.2,\n        pump_status: 1,\n        mode: 'normal'\n    };\n}\n\n// Update mode\nif (msg.mode) {\n    context.sensorState.mode = msg.mode;\n}\n\n// Generate normal sensor data with physics\nif (context.sensorState.pump_status === 1) {\n    // Pump ON - normal operation\n    context.sensorState.flow = 5.0 + (Math.random() - 0.5) * 0.5;\n    context.sensorState.pressure = 10.0 + (Math.random() - 0.5) * 1.0;\n    context.sensorState.motor_current = 1.2 + (Math.random() - 0.5) * 0.1;\n    context.sensorState.temp = 25.0 + (Math.random() - 0.5) * 0.5;\n} else {\n    // Pump OFF\n    context.sensorState.flow = 0.0;\n    context.sensorState.pressure = 0.0;\n    context.sensorState.motor_current = 0.0;\n    context.sensorState.temp = 25.0 + (Math.random() - 0.5) * 0.5;\n}\n\n// If in attack mode, inject anomalies\nif (context.sensorState.mode === 'attack') {\n    // Simulate sensor spoofing attack - pressure stuck\n    context.sensorState.pressure = 5.0; // Fixed value\n    // Simulate false data injection - current doubled\n    context.sensorState.motor_current *= 2.0;\n}\n\n// Create message\nmsg.payload = {\n    timestamp: new Date().toISOString(),\n    flow_rate: parseFloat(context.sensorState.flow.toFixed(2)),\n    pressure: parseFloat(context.sensorState.pressure.toFixed(2)),\n    temperature: parseFloat(context.sensorState.temp.toFixed(2)),\n    motor_current: parseFloat(context.sensorState.motor_current.toFixed(3)),\n    pump_status: context.sensorState.pump_status,\n    mode: context.sensorState.mode,\n    is_anomaly: context.sensorState.mode === 'attack' ? 1 : 0\n};\n\nmsg.topic = \"ics/telemetry/data\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 130,
+        "wires": [
+            ["mqtt_publisher", "debug_output", "dashboard_ui"]
+        ]
+    },
+    {
+        "id": "mqtt_publisher",
+        "type": "mqtt out",
+        "z": "ec2b6c0c.b0c4d8",
+        "name": "Publish to MQTT",
+        "topic": "ics/telemetry/data",
+        "qos": "0",
+        "retain": false,
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "mosquitto_broker",
+        "x": 850,
+        "y": 130,
+        "wires": []
+    },
+    {
+        "id": "timer",
+        "type": "inject",
+        "z": "ec2b6c0c.b0c4d8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 380,
+        "y": 80,
+        "wires": [
+            ["sensor_generator"]
+        ]
+    },
+    {
+        "id": "pump_control",
+        "type": "inject",
+        "z": "ec2b6c0c.b0c4d8",
+        "name": "Toggle Pump",
+        "props": [
+            {
+                "p": "payload",
+                "v": "",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "pump/toggle",
+        "payload": "",
+        "payloadType": "str",
+        "x": 150,
+        "y": 220,
+        "wires": [
+            ["pump_toggle"]
+        ]
+    },
+    {
+        "id": "pump_toggle",
+        "type": "function",
+        "z": "ec2b6c0c.b0c4d8",
+        "name": "Toggle Pump Status",
+        "func": "if (!context.sensorState) {\n    context.sensorState = {\n        pump_status: 1\n    };\n}\ncontext.sensorState.pump_status = context.sensorState.pump_status === 1 ? 0 : 1;\nmsg.payload = {\n    pump_status: context.sensorState.pump_status\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 220,
+        "wires": [
+            ["sensor_generator"]
+        ]
+    },
+    {
+        "id": "debug_output",
+        "type": "debug",
+        "z": "ec2b6c0c.b0c4d8",
+        "name": "Sensor Data",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 850,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "dashboard_ui",
+        "type": "function",
+        "z": "ec2b6c0c.b0c4d8",
+        "name": "Format for Dashboard",
+        "func": "// Convert to dashboard format\nmsg.payload = [\n    {topic: \"flow\", payload: msg.payload.flow_rate, unit: \"L/min\"},\n    {topic: \"pressure\", payload: msg.payload.pressure, unit: \"psi\"},\n    {topic: \"temperature\", payload: msg.payload.temperature, unit: \"°C\"},\n    {topic: \"current\", payload: msg.payload.motor_current, unit: \"A\"},\n    {topic: \"pump\", payload: msg.payload.pump_status === 1 ? \"ON\" : \"OFF\"},\n    {topic: \"mode\", payload: msg.payload.mode === \"normal\" ? \"NORMAL\" : \"ATTACK\"},\n    {topic: \"status\", payload: msg.payload.is_anomaly === 1 ? \"ALERT!\" : \"OK\"}\n];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 850,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "intervention_handler",
+        "type": "mqtt in",
+        "z": "ec2b6c0c.b0c4d8",
+        "name": "AI Intervention Commands",
+        "topic": "ics/security/intervention",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "mosquitto_broker",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 320,
+        "wires": [
+            ["execute_intervention"]
+        ]
+    },
+    {
+        "id": "execute_intervention",
+        "type": "function",
+        "z": "ec2b6c0c.b0c4d8",
+        "name": "Execute Intervention",
+        "func": "// Turn pump OFF when intervention received\nif (!context.sensorState) {\n    context.sensorState = { pump_status: 1 };\n}\ncontext.sensorState.pump_status = 0;\n\n// Create alert message\nmsg.payload = {\n    command: \"pump_shutdown\",\n    reason: msg.payload.reason || \"Security intervention\",\n    timestamp: new Date().toISOString(),\n    original_payload: msg.payload\n};\n\nnode.warn(\"SECURITY INTERVENTION: Pump shutdown triggered by AI\");\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 320,
+        "wires": [
+            ["sensor_generator", "alert_display"]
+        ]
+    },
+    {
+        "id": "alert_display",
+        "type": "debug",
+        "z": "ec2b6c0c.b0c4d8",
+        "name": "Security Alert",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 600,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "mosquitto_broker",
+        "type": "mqtt-broker",
+        "name": "Mosquitto",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": false,
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": false,
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": false,
+        "willPayload": "",
+        "willMsg": {}
+    }
+]
