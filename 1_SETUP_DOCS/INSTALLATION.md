@@ -18,7 +18,7 @@ First, clone the repository and navigate into the project directory:
 
 ```bash
 # Clone the repository
-git clone [https://github.com/Abdullah-1289/pipeline_project.git](https://github.com/Abdullah-1289/pipeline_project.git)
+git clone https://github.com/Abdullah-1289/pipeline_project.git
 cd pipeline_project
 
 2. Automated Installation
@@ -82,18 +82,17 @@ Bash
 
 ### Final Steps to Update GitHub
 
-You need to update the file on your local laptop and commit the change.
+You need to save this correctly formatted content into your local file: `1_SETUP_DOCS/INSTALLATION.md`.
 
-1.  **Edit the file:** Paste the revised content into your local file: `1_SETUP_DOCS/INSTALLATION.md`.
-2.  **Stage the change:**
+1.  **Stage the change:**
     ```bash
     git add 1_SETUP_DOCS/INSTALLATION.md
     ```
-3.  **Commit the change:**
+2.  **Commit the change:**
     ```bash
-    git commit -m "Update: Corrected INSTALLATION.md paths and added detailed manual setup steps for Node-RED."
+    git commit -m "Fix: Corrected Markdown formatting in INSTALLATION.md to properly render code blocks."
     ```
-4.  **Push the update:**
+3.  **Push the update:**
     ```bash
     git push origin main
     ```
