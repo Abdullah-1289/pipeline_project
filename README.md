@@ -16,3 +16,9 @@
 - False Positives: <5%
 - 4 MITRE Attacks Tested
 - Real-time Response: <100ms
+
+## 📄 License & Academic Use
+
+This project is licensed under the MIT License. This capstone project was developed as partial fulfillment of the requirements for the Bachelor of Science in Computer Engineering degree at the American University of Bahrain.
+
+**Academic Fair Use**: Other students may reference this work for educational purposes with proper citation.
