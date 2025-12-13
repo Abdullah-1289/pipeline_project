@@ -1,0 +1,5 @@
+metric,normal_mean,attack_mean,target,achieved
+Flow Rate,4.968846044781771,5.0194688759301345,5.0 ± 0.5,4.99 ± 0.30
+Pressure,10.011152293524963,5.0,10.0 ± 1.0,7.51 ± 2.53
+Detection Rate,N/A,N/A,> 90%,86.0%
+False Positive Rate,N/A,N/A,< 5%,< 3%
