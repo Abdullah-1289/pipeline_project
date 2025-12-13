@@ -1,4 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
 venv/
-*.pyc
-*.log
-*.db
+pip-log.txt
+
+# Node/Node-RED
+node_modules/
+npm-debug.log*
+.npm
+
+# Data files (keep only necessary)
+*.pkl
+*.h5
+*.model
+*.weights
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Your data - EXCLUDE venv, but keep your CSV/PNG files
+venv/
+!3_DATA_AND_ARTIFACTS/*.csv
+!3_DATA_AND_ARTIFACTS/*.png
