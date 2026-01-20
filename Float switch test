@@ -1,0 +1,18 @@
+#define FLOAT_PIN 37  // GPIO you used
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(FLOAT_PIN, INPUT_PULLUP); // important
+}
+
+void loop() {
+  int state = digitalRead(FLOAT_PIN);
+
+  if (state == LOW) {
+    Serial.println("FLOAT SWITCH: ON (water high)");
+  } else {
+    Serial.println("FLOAT SWITCH: OFF (water low)");
+  }
+
+  delay(500);
+}
