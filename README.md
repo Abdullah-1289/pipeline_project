@@ -5,6 +5,7 @@
 - [Node-RED Flow](1_SETUP_DOCS/NODE_RED_FLOWS.json)
 - [Run Simulation](2_CODE_AND_SCRIPTS/run_simulation.sh)
 - [View Results](3_DATA_AND_ARTIFACTS/)
+- rpuak_3hi1gnLZkStj1GZn6GcaaxPd (Auth token for rasp pi connect)
 
 
 ## Results Summary
@@ -18,3 +19,4 @@
 This project is licensed under the MIT License. This capstone project was developed as partial fulfillment of the requirements for the Bachelor of Science in Computer Engineering degree at the American University of Bahrain.
 
 **Academic Fair Use**: Other students may reference this work for educational purposes with proper citation.
+
