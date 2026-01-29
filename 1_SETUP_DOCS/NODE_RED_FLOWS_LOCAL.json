@@ -28,7 +28,9 @@
         "x": 150,
         "y": 100,
         "wires": [
-            ["operation_mode"]
+            [
+                "operation_mode"
+            ]
         ]
     },
     {
@@ -52,7 +54,9 @@
         "x": 150,
         "y": 160,
         "wires": [
-            ["operation_mode"]
+            [
+                "operation_mode"
+            ]
         ]
     },
     {
@@ -77,7 +81,9 @@
         "x": 380,
         "y": 130,
         "wires": [
-            ["sensor_generator"]
+            [
+                "sensor_generator"
+            ]
         ]
     },
     {
@@ -94,7 +100,11 @@
         "x": 600,
         "y": 130,
         "wires": [
-            ["mqtt_publisher", "debug_output", "dashboard_ui"]
+            [
+                "mqtt_publisher",
+                "debug_output",
+                "dashboard_ui"
+            ]
         ]
     },
     {
@@ -139,7 +149,9 @@
         "x": 380,
         "y": 80,
         "wires": [
-            ["sensor_generator"]
+            [
+                "sensor_generator"
+            ]
         ]
     },
     {
@@ -164,7 +176,9 @@
         "x": 150,
         "y": 220,
         "wires": [
-            ["pump_toggle"]
+            [
+                "pump_toggle"
+            ]
         ]
     },
     {
@@ -181,7 +195,9 @@
         "x": 380,
         "y": 220,
         "wires": [
-            ["sensor_generator"]
+            [
+                "sensor_generator"
+            ]
         ]
     },
     {
@@ -215,8 +231,136 @@
         "x": 850,
         "y": 260,
         "wires": [
-            []
+            [
+                "flow_gauge",
+                "pressure_gauge",
+                "temp_gauge",
+                "current_gauge"
+            ]
         ]
+    },
+    {
+        "id": "flow_gauge",
+        "type": "ui_gauge",
+        "z": "ec2b6c0c.b0c4d8",
+        "name": "Flow Rate",
+        "group": "simulation_group",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Flow Rate",
+        "label": "L/min",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 10,
+        "colors": [
+            "#00B500",
+            "#E6E600",
+            "#CA3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 1050,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "pressure_gauge",
+        "type": "ui_gauge",
+        "z": "ec2b6c0c.b0c4d8",
+        "name": "Pressure",
+        "group": "simulation_group",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Pressure",
+        "label": "psi",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 20,
+        "colors": [
+            "#00B500",
+            "#E6E600",
+            "#CA3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 1050,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "temp_gauge",
+        "type": "ui_gauge",
+        "z": "ec2b6c0c.b0c4d8",
+        "name": "Temperature",
+        "group": "simulation_group",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Temperature",
+        "label": "°C",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 100,
+        "colors": [
+            "#00B500",
+            "#E6E600",
+            "#CA3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 1050,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "current_gauge",
+        "type": "ui_gauge",
+        "z": "ec2b6c0c.b0c4d8",
+        "name": "Motor Current",
+        "group": "simulation_group",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Motor Current",
+        "label": "A",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 5,
+        "colors": [
+            "#00B500",
+            "#E6E600",
+            "#CA3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 1050,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "simulation_group",
+        "type": "ui_group",
+        "name": "Pipeline Telemetry",
+        "tab": "simulation_tab",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "simulation_tab",
+        "type": "ui_tab",
+        "name": "ICS Dashboard",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
     },
     {
         "id": "intervention_handler",
@@ -234,7 +378,9 @@
         "x": 150,
         "y": 320,
         "wires": [
-            ["execute_intervention"]
+            [
+                "execute_intervention"
+            ]
         ]
     },
     {
@@ -251,7 +397,10 @@
         "x": 380,
         "y": 320,
         "wires": [
-            ["sensor_generator", "alert_display"]
+            [
+                "sensor_generator",
+                "alert_display"
+            ]
         ]
     },
     {
@@ -274,12 +423,13 @@
     {
         "id": "mosquitto_broker",
         "type": "mqtt-broker",
-        "name": "Mosquitto",
-        "broker": "localhost",
-        "port": "1883",
-        "clientid": "",
+        "name": "Mosquitto TLS",
+        "broker": "10.27.38.206",
+        "port": "8883",
+        "clientid": "Node-RED-Laptop",
         "autoConnect": true,
-        "usetls": false,
+        "usetls": true,
+        "tls": "tls_config",
         "protocolVersion": "4",
         "keepalive": "60",
         "cleansession": true,
@@ -297,6 +447,23 @@
         "willQos": "0",
         "willRetain": false,
         "willPayload": "",
-        "willMsg": {}
+        "willMsg": {},
+        "credentials": {
+            "user": "naim",
+            "password": "1234"
+        }
+    },
+    {
+        "id": "tls_config",
+        "type": "tls-config",
+        "name": "Mosquitto CA",
+        "cert": "",
+        "key": "",
+        "ca": "pipeline_ca.crt",
+        "certname": "",
+        "keyname": "",
+        "caname": "pipeline_ca.crt",
+        "servername": "10.27.38.206",
+        "verifyservercert": true
     }
 ]

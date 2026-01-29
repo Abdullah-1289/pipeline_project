@@ -1,0 +1,15 @@
+[Unit]
+Description=Node-RED graphical event-based tool for wiring together hardware devices
+After=network.target
+
+[Service]
+Type=simple
+User=naim
+Group=naim
+WorkingDirectory=/home/naim
+ExecStart=/usr/bin/node-red-pi --max-old-space-size=256
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

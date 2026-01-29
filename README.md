@@ -1,22 +1,73 @@
 # ICS Pipeline Security with AI
 
-## Quick Links
-- [Setup Guide](1_SETUP_DOCS/INSTALLATION.md)
-- [Node-RED Flow](1_SETUP_DOCS/NODE_RED_FLOWS.json)
-- [Run Simulation](2_CODE_AND_SCRIPTS/run_simulation.sh)
-- [View Results](3_DATA_AND_ARTIFACTS/)
-- rpuak_3hi1gnLZkStj1GZn6GcaaxPd (Auth token for rasp pi connect)
+This project implements an AI-driven security node for Industrial Control Systems (ICS), specifically targeting SCADA-based oil and gas pipeline monitoring.
 
+## 🚀 Distributed Architecture
+The system is divided into three main components:
+1. **ESP32-S3 (PLC)**: Collects sensor data and controls actuators (In progress).
+2. **Raspberry Pi 5 (Security Node)**: Hosts the MQTT broker, AI inference engine, and telemetry logger.
+3. **Laptop (SCADA)**: Hosts the Node-RED HMI/Dashboard for real-time monitoring and control.
 
-## Results Summary
-- Detection Rate: 86%
-- False Positives: <5%
-- 4 MITRE Attacks Tested
-- Real-time Response: <100ms
+## 🛠 Setup Guides
+- [🍓 Raspberry Pi Setup](1_SETUP_DOCS/RASPBERRY_PI_SETUP.md)
+- [💻 Laptop SCADA Setup](1_SETUP_DOCS/LAPTOP_SCADA_SETUP.md)
+- [🔒 MQTT Connection Guide](mqtt_connection_guide.md)
+
+## 📊 Project Status
+- **RPi Address**: `10.27.38.206` (SSH: naim@10.27.38.206, Password: 1234)
+- **MQTT Broker**: Fully operational over TLS (Port 8883) with Auth.
+- **AI Node**: Active on RPi, running in **Collection Mode** to gather training data.
+- **SCADA**: Node-RED flows ready for deployment on laptop (localhost:1880).
+- **Logging**: Real-time telemetry logging at `3_DATA_AND_ARTIFACTS/security_logs.csv`.
+
+## 🎯 Quick Start After ESP32 Deployment
+
+```bash
+# 1. Test RPi connectivity
+ssh naim@10.27.38.206
+
+# 2. Check all services
+sudo systemctl status mosquitto ics_ai_node ics_logger
+
+# 3. View live logs
+journalctl -u ics_ai_node -f
+
+# 4. On laptop: Start Node-RED
+node-red-pi --max-old-space-size=256
+
+# 5. Access SCADA dashboard
+# Open: http://localhost:1880/ui
+```
+
+## 🤖 AI Training (After 3 Days)
+
+```bash
+# SSH to RPi
+ssh naim@10.27.38.206
+
+# Train the model
+cd /home/naim/pipeline_project
+source venv/bin/activate
+python3 2_CODE_AND_SCRIPTS/train_model.py
+
+# Switch to monitor mode
+# Edit /etc/systemd/system/ics_ai_node.service and add "monitor" argument
+sudo systemctl restart ics_ai_node
+```
+
+## ⚙️ Service Management (on RPi)
+```bash
+# Check status
+sudo systemctl status ics_ai_node ics_logger mosquitto
+
+# Restart a service
+sudo systemctl restart ics_ai_node
+
+# View logs
+journalctl -u ics_ai_node -f
+journalctl -u ics_logger -f
+```
 
 ## 📄 License & Academic Use
-
-This project is licensed under the MIT License. This capstone project was developed as partial fulfillment of the requirements for the Bachelor of Science in Computer Engineering degree at the American University of Bahrain.
-
-**Academic Fair Use**: Other students may reference this work for educational purposes with proper citation.
+This project is licensed under the MIT License. Developed as partial fulfillment of the requirements for the Bachelor of Science in Computer Engineering degree at the American University of Bahrain.
 

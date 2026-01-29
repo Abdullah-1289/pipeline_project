@@ -1,0 +1,15 @@
+[Unit]
+Description=ICS AI Security Node Inference Service
+After=network.target mosquitto.service
+
+[Service]
+Type=simple
+User=naim
+Group=naim
+WorkingDirectory=/home/naim/pipeline_project
+ExecStart=/home/naim/pipeline_project/venv/bin/python3 -u /home/naim/pipeline_project/2_CODE_AND_SCRIPTS/ai_security_node_final.py
+Restart=always
+RestartSec=15
+
+[Install]
+WantedBy=multi-user.target

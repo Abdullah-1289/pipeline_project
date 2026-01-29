@@ -17,6 +17,9 @@ npm-debug.log*
 *.h5
 *.model
 *.weights
+*.crt
+*.key
+*.pem
 
 # OS
 .DS_Store
