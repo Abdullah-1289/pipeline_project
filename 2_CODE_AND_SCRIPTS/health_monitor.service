@@ -1,0 +1,23 @@
+[Unit]
+Description=ICS Security System Health Monitor
+After=network.target mosquitto.service
+
+[Service]
+Type=simple
+User=naim
+WorkingDirectory=/home/naim/pipeline_project
+ExecStart=/usr/bin/python3 /home/naim/pipeline_project/2_CODE_AND_SCRIPTS/health_monitor.py --daemon
+Restart=always
+RestartSec=10
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=ics-health-monitor
+
+# Environment
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target
+

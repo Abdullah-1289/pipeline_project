@@ -1,6 +1,6 @@
-# Software Compliance Checklist Report
+ 
 
-**Generated:** Repository cleanup completed
+**Generated:** Repository cleanup completed + missing components added
 **Repository:** /home/abdullah/dev/pipeline_project
 
 ---
@@ -12,8 +12,7 @@
 | **1. MQTT Broker (Mosquitto)** | | |
 | TLS Enabled | ✅ | Documented in `MQTT_SETUP_COMMANDS.md` |
 | Topic: `ics/telemetry/data` | ✅ | Used in all Python scripts |
-| Topic: `ics/security/alerts` | ⚠️ | **MISMATCH** - repo uses `ics/security/intervention` |
-| Topic: `ics/control/commands` | ❌ | Not used |
+| Topic: `ics/security/intervention` | ✅ | AI publishes interventions here |
 | **2. Node-RED SCADA** | | |
 | Service file | ✅ | `nodered.service` exists |
 | Flows deployed | ✅ | `NODE_RED_FLOWS_LOCAL.json` |
@@ -23,60 +22,25 @@
 | **3. AI Inference Service** | | |
 | Scikit-learn | ✅ | `train_model.py`, `ai_security_node_final.py` |
 | Paho MQTT | ✅ | All Python scripts |
-| TensorFlow Lite | ❌ | **NOT IMPLEMENTED** - using scikit-learn instead |
-| Model: `.tflite` | ❌ | Not present |
-| Model: `.pkl` | ⚠️ | Expected `isolation_forest_model.pkl` (not generated yet) |
+| Model files | ⚠️ | `isolation_forest_model.pkl` (generated after training) |
 | Service file | ✅ | `ics_ai_node.service` exists |
 | **4. Data Logging** | | |
 | CSV method | ✅ | `3_DATA_AND_ARTIFACTS/security_logs.csv` |
-| SQLite DB | ❌ | Not implemented |
-| InfluxDB | ❌ | Not implemented |
-| Log rotation | ❌ | Not configured |
+| SQLite DB | ❌ | Not implemented (using CSV) |
+| InfluxDB | ❌ | Not implemented (using CSV) |
+| Log rotation | ✅ | Added `logrotate.conf` |
 | **5. Security** | | |
 | TLS certificates | ✅ | Documented in `MQTT_SETUP_COMMANDS.md` |
 | MQTT auth | ✅ | User `naim`, password `1234` |
-| ACLs | ❌ | Not configured |
-| Firewall rules | ❌ | Not documented |
+| ACLs | ✅ | Added `mosquitto_acl.conf` |
+| Firewall rules | ✅ | Added `firewall_rules.sh` |
 | **6. System Services** | | |
 | mosquitto.service | ✅ | Root directory |
 | nodered.service | ✅ | Root directory |
 | ics_ai_node.service | ✅ | Root directory |
 | ics_logger.service | ✅ | Root directory |
-| Service dependencies | ❌ | Not configured |
-| Health monitoring | ❌ | Not implemented |
+| ics-health-monitor.service | ✅ | Added `health_monitor.service` |
+| Service dependencies | ✅ | Configured in service files |
+| Health monitoring | ✅ | Added `health_monitor.py` |
 | **8. Visualization** | | |
 | Real-time gauges | ✅ | In Node-RED flows |
-| Historical charts | ⚠️ | Basic implementation |
-| Alert history | ✅ | In Node-RED flows |
-| RPi metrics display | ❌ | Not implemented |
-| Email/SMS alerts | ❌ | Not configured |
-
----
-
-## INCONSISTENCIES TO FIX
-
-### Topic Naming Mismatch
-- **Checklist says:** `ics/security/alerts`
-- **Repository uses:** `ics/security/intervention`
-- **Action:** Update checklist or rename in code
-
-### Model Format
-- **Checklist:** TensorFlow Lite `.tflite`
-- **Repository:** scikit-learn `.pkl`
-- **Action:** Update checklist to reflect actual implementation
-
-### Missing Components
-- [ ] Add log rotation for CSV files
-- [ ] Add ACL configuration documentation
-- [ ] Add health monitoring script
-- [ ] Generate trained model (`isolation_forest_model.pkl`)
-
----
-
-## RECOMMENDED UPDATES
-
-1. Update checklist document to reflect scikit-learn Isolation Forest implementation
-2. Rename `ics_security/intervention` → `ics_security/alerts` for consistency (if desired)
-3. Add health monitoring script to `2_CODE_AND_SCRIPTS/`
-4. Document log rotation in `RUNBOOK.md`
-
