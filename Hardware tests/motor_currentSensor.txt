@@ -1,0 +1,28 @@
+#define RELAY 4
+#define SENSOR 7
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(RELAY, OUTPUT);
+  digitalWrite(RELAY, LOW);
+}
+
+void loop() {
+  // Read current
+  float current = (analogRead(SENSOR) - 1850) / 160.0;
+  Serial.print("Current: ");
+  Serial.println(current, 2);
+  
+  delay(1000);
+  
+  // Simple pump test: 5s ON, 5s OFF
+  static bool pumpOn = false;
+  static byte count = 0;
+  count++;
+  
+  if (count == 5) {
+    pumpOn = !pumpOn;
+    digitalWrite(RELAY, pumpOn ? HIGH : LOW);
+    count = 0;
+  }
+}
