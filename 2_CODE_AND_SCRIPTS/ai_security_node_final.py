@@ -33,7 +33,8 @@ CA_CERT = "/etc/mosquitto/ca_certificates/ca.crt"
 
 # Model configuration
 MODEL_PATH = "/home/naim/pipeline_project/3_DATA_AND_ARTIFACTS/isolation_forest_model.pkl"
-FEATURES = ['flow_rate', 'pressure', 'temperature', 'motor_current']
+FEATURES = ['flow_rate', 'pressure', 'temperature', 'motor_current',
+            'phase', 'valve_opening', 'safety_trip', 'a_high', 'b_low']
 
 # Thresholds
 ANOMALY_THRESHOLD = -0.5  # Decision function threshold for anomalies
@@ -183,16 +184,14 @@ class ICSAISecurityNode:
                 "flow_rate": data.get('flow_rate'),
                 "pressure": data.get('pressure'),
                 "temperature": data.get('temperature'),
-                "motor_current": data.get('motor_current')
+                "motor_current": data.get('motor_current'),
+                "phase": data.get('phase'),
+                "valve_opening": data.get('valve_opening'),
+                "safety_trip": data.get('safety_trip'),
+                "a_high": data.get('a_high'),
+                "b_low": data.get('b_low')
             }
         }
-        
-        # Publish intervention
-        result = self.client.publish(
-            "ics/security/intervention",
-            json.dumps(intervention)
-        )
-        
         self.intervention_count += 1
         
         print(f"\n{'!'*60}")

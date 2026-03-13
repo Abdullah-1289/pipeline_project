@@ -44,3 +44,8 @@
 | Health monitoring | ✅ | Added `health_monitor.py` |
 | **8. Visualization** | | |
 | Real-time gauges | ✅ | In Node-RED flows |
+| Historical charts | ⚠️ | Basic implementation |
+| Alert history | ✅ | In Node-RED flows |
+| RPi metrics display | ✅ | In `health_monitor.py` |
+| Email/SMS alerts | ⚠️ | Framework ready (add email config) |
+

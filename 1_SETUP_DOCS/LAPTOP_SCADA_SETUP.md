@@ -47,7 +47,15 @@ scp naim@10.27.38.206:/etc/mosquitto/ca_certificates/ca.crt ~/pipeline_ca.crt
 ```
 
 ## 🔄 SCADA Dashboard Setup
+The flow has been enhanced to display several new signals from the ESP32:
+- **Phase** (A→B / B→A) text indicator
+- **Valve** state (opening delay) text indicator
+- **Safety** trip/OK status
+- **A High** and **B Low** float states individually
 
+These correspond to additional payload fields sent by the controller.  The
+`NODE_RED_FLOWS_LOCAL.json` file already includes the necessary gauges/text
+nodes; simply import it into Node‑RED as before.
 ### Step 1: Open Node-RED
 
 ```bash
@@ -133,7 +141,7 @@ If the ESP32 is not yet deployed, you can use the **simulation mode**:
 ```
 ~/pipeline_project/
 ├── 1_SETUP_DOCS/
-│   ├── NODE_RED_FLOWS.json          # SCADA dashboard flow
+│   ├── NODE_RED_FLOWS.json          # SCADA dashboard flow (updated with phase/valve/safety widgets)
 │   ├── LAPTOP_SCADA_SETUP.md        # This file
 │   └── RASPBERRY_PI_SETUP.md        # RPi documentation
 └── pipeline_ca.crt                  # TLS certificate

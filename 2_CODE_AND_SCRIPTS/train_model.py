@@ -24,7 +24,8 @@ import os
 from datetime import datetime
 
 # Configuration
-FEATURES = ['flow_rate', 'pressure', 'temperature', 'motor_current']
+FEATURES = ['flow_rate', 'pressure', 'temperature', 'motor_current',
+            'phase', 'valve_opening', 'safety_trip', 'a_high', 'b_low']
 CONTAMINATION = 0.01  # Expect ~1% anomalies in production
 
 def load_data(data_path):
@@ -39,6 +40,11 @@ def load_data(data_path):
         df['pressure'] = df['parsed_data'].apply(lambda x: x.get('pressure', 0))
         df['temperature'] = df['parsed_data'].apply(lambda x: x.get('temperature', 0))
         df['motor_current'] = df['parsed_data'].apply(lambda x: x.get('motor_current', 0))
+        df['phase'] = df['parsed_data'].apply(lambda x: x.get('phase', 0))
+        df['valve_opening'] = df['parsed_data'].apply(lambda x: x.get('valve_opening', 0))
+        df['safety_trip'] = df['parsed_data'].apply(lambda x: x.get('safety_trip', 0))
+        df['a_high'] = df['parsed_data'].apply(lambda x: x.get('a_high', 0))
+        df['b_low'] = df['parsed_data'].apply(lambda x: x.get('b_low', 0))
     except Exception as e:
         print(f"Error parsing data: {e}")
         # Try alternative parsing

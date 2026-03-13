@@ -18,6 +18,17 @@ The system is divided into three main components:
 - **MQTT Broker**: Fully operational over TLS (Port 8883) with Auth.
 - **AI Node**: Active on RPi, running in **Collection Mode** to gather training data.
 - **SCADA**: Node-RED flows ready for deployment on laptop (localhost:1880).
+
+### New telemetry fields
+The ESP32 now publishes additional JSON keys useful for monitoring and AI:
+`phase` (0=A→B, 1=B→A), `valve_opening` (0/1 during the 500 ms pre‑open delay),
+`safety_trip` (non‑zero when the hard‑safety layer has shut the system),
+`a_high` and `b_low` (individual float switches).  These appear alongside the
+original `floats` array.
+
+### Modbus registers added
+New holding register addresses have been defined for PLC/SCADA clients
+(106‑110) corresponding to phase, valve, safety, A high and B low status.
 - **Logging**: Real-time telemetry logging at `3_DATA_AND_ARTIFACTS/security_logs.csv`.
 
 ## 🎯 Quick Start After ESP32 Deployment
